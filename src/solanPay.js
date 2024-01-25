@@ -4,11 +4,14 @@ import { Connection, Keypair, PublicKey } from '@solana/web3.js';
 import { encodeURL, findReference, validateTransfer } from '@solana/pay';
 import BigNumber from 'bignumber.js';
 import base58 from 'base58';
+import fs from 'fs';
+import path from 'path';
 
 const DB = [];
 console.log(DB);
 const port = 8000;
 const hostname = 'localhost';
+const DATABASE = path.join(__dirname, 'db.json');
 
 const myWallet = '8i4oEHAnExdeRtUper8NvhBwd8upTVvwvpPyJ5HamxCX';
 const recipient = new PublicKey(myWallet);
@@ -70,7 +73,24 @@ async function verifyTransaction(reference) {
 }
 const requestHandler = async (req, res) => {
   const { query, pathname } = url.parse(req.url, true);
-  if (pathname === '/api/verifyQr' && req.method === 'GET') {
+  if (pathname.startsWith('/api/verifyQr') && req.method === 'GET') {
+    const reference = req.url.split('/')[3];
+
+    fs.readFile(DATABASE, 'utf-8', (err, data) => {
+      if (err) {
+        console.log('error in reading file');
+      }
+      const dataObj = JSON.parse(data);
+      const objIndex = dataObj.findIndex((obj) => obj.id === id);
+      if (objIndex === -1) {
+        res.writeHead(404);
+        res.end('NOT FOUND!');
+      } else {
+        const obj = dataObj[objIndex];
+        res.writeHead(200, { 'Content-type': 'application/json' });
+        res.end(JSON.stringify(obj));
+      }
+    });
   }
   // Using the POST http method
   if (pathname === '/api/generatQR' && req.method === 'POST') {
@@ -94,9 +114,20 @@ const requestHandler = async (req, res) => {
         memo
       );
       const ref = reference.toBase58();
-      DB.push(ref);
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ status: 'success', ref, newURl }));
+      fs.readFile(DATABASE, 'utf8', (err, data) => {
+        if (err) console.log('an error occured');
+        const dataObj = JSON.parse(data);
+        const id = Math.floor(Math.random() * 1000000 + 1);
+        const storedRef = { ref, id };
+        dataObj.push(newData);
+        const final = JSON.stringify(dataObj);
+        fs.writeFile(DATABASE, final, (err) => {
+          if (err) console.log('an error occured');
+          console.log('file is written');
+        });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'success', ref, newURl }));
+      });
     });
   }
 };
