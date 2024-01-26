@@ -54,11 +54,18 @@ const requestHandler = async (req, res) => {
       });
       req.on('end', async () => {
         const ref = new Keypair().publicKey;
+        const currentSolPrice = 88.07; //current sol price as at the time of task
         const bufferData = Buffer.concat(body).toString();
         const jsonBuffer = JSON.parse(bufferData);
         if (!jsonBuffer) throw new Error('Invalid input');
-        const { message, amount, wallet, label } = jsonBuffer;
+        const { message, price, quantity, wallet, label } = jsonBuffer;
+        const totalPrice = price * quantity;
+        let amount = totalPrice / currentSolPrice;
+        amount = Number(amount.toFixed(9));
+        console.log(amount);
+
         const recipient = new PublicKey(wallet);
+
         const amountInSol = new BigNumber(amount);
 
         const newURl = await generateUrl(
@@ -69,10 +76,10 @@ const requestHandler = async (req, res) => {
           message
         );
 
-        // const payer = new PublicKey(
-        //   'Cpn71vR5X7Vfw7j6rWqQCVGAahkyR5n92k4Km4ie7W5Q'
-        // );
-        // const payerSign = await processPayment(newURl.href, payer);
+        const payer = new PublicKey(
+          'Cpn71vR5X7Vfw7j6rWqQCVGAahkyR5n92k4Km4ie7W5Q'
+        );
+        const payerSign = await processPayment(newURl.href, payer);
         fs.readFile(DATABASE, 'utf8', (err, data) => {
           if (err) console.log('an error occured');
           const dataObj = JSON.parse(data);
