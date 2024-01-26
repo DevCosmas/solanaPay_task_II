@@ -20,6 +20,7 @@ const __dirname = dirname(__filename);
 const DATABASE = path.join(__dirname, 'db.json');
 
 const PORT = 8000;
+const HOSTNAME = 'localhost';
 
 const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
 
@@ -107,6 +108,6 @@ const requestHandler = async (req, res) => {
   }
 };
 const apiServer = http.createServer(requestHandler);
-apiServer.listen(PORT, () => {
+apiServer.listen(PORT, HOSTNAME, () => {
   console.log(`server is running successfully at port ${PORT}`);
 });
