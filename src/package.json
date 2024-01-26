@@ -2,10 +2,11 @@
   "name": "src",
   "version": "1.0.0",
   "description": "",
-  "main": "solanPay.js",
+  "main": "solanaPay.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon pay.js"
+    "dev": "nodemon solanaPay.js",
+    "start": "node solanaPay.js"
   },
   "type": "module",
   "author": "",
@@ -14,6 +15,7 @@
     "@solana/pay": "^0.2.5",
     "@solana/web3.js": "^1.89.1",
     "base58": "^2.0.1",
+    "bs58": "^5.0.0",
     "dotenv": "^16.4.1",
     "nodemon": "^3.0.3"
   }
