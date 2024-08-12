@@ -5,8 +5,8 @@
   "main": "solanaPay.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon solanaPay.js",
-    "start": "node solanaPay.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "type": "module",
   "author": "",
@@ -15,10 +15,15 @@
     "@solana/pay": "^0.2.5",
     "@solana/web3.js": "^1.89.1",
     "base58": "^2.0.1",
+    "body-parser": "^1.20.2",
     "bs58": "^5.0.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "nodemon": "^3.0.3"
   },
   "engines": {
