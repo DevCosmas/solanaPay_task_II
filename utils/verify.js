@@ -1,8 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+import AppError from './appError.js';
 import { findReference, validateTransfer } from '@solana/pay';
 import { Connection, Keypair, PublicKey } from '@solana/web3.js';
-
-const AppError = require('./appError');
 
 const connection = new Connection(process.env.SOLANA_CONNECTION, 'confirmed');
 
@@ -40,6 +40,6 @@ export default async function verifyTransaction(reference) {
       return response;
     }
   } catch (error) {
-    new AppError(err, err.statusCode);
+    new AppError(error, error.statusCode || 500);
   }
 }

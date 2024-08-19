@@ -5,8 +5,8 @@
   "main": "solanaPay.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "start": " cross-env NODE_ENV=production concurrently \"node app.js\""
   },
   "type": "module",
   "author": "",
@@ -28,5 +28,9 @@
   },
   "engines": {
     "node": ">=14.20.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
   }
 }

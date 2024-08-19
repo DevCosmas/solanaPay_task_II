@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const transactionSchema = new mongoose.Schema({
   ref: { type: String, required: true },
   id: { type: Number, required: true },
-  recipient: { type: mongoose.Schema.Types.Mixed, required: true }, // Use Mixed type for flexibility
-  amountInSol: { type: mongoose.Schema.Types.Mixed, required: true },
-  label: { type: String, required: true },
-  message: { type: String, required: true },
+  recipient: { type: String, required: true },
+  amountInSol: { type: String, required: true },
+  label: { type: String, required: false },
+  message: { type: String, required: true, default: 'Thank You For buying' },
 });
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
-module.exports = Transaction;
+export default Transaction;
