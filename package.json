@@ -15,6 +15,7 @@
     "@solana/pay": "^0.2.5",
     "@solana/web3.js": "^1.89.1",
     "base58": "^2.0.1",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "bs58": "^5.0.0",
     "cookie-parser": "^1.4.6",
@@ -23,6 +24,7 @@
     "express": "^4.18.2",
     "express-rate-limit": "^7.4.0",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.3",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.3"
   },
