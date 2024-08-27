@@ -3,7 +3,6 @@ import AppError from '../utils/appError.js';
 
 export async function fetchProduct(req, res, next) {
   try {
-    // Extract query parameters
     const {
       category,
       name,
@@ -12,12 +11,9 @@ export async function fetchProduct(req, res, next) {
       page = 1,
       limit = 10,
     } = req.query;
-
-    // Convert page and limit to integers
     const pageNumber = parseInt(page, 10);
     const limitNumber = parseInt(limit, 10);
 
-    // Build query object
     const query = {};
 
     if (category) {
@@ -25,7 +21,7 @@ export async function fetchProduct(req, res, next) {
     }
 
     if (name) {
-      query.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+      query.name = { $regex: name, $options: 'i' };
     }
 
     if (priceMin || priceMax) {
@@ -38,19 +34,15 @@ export async function fetchProduct(req, res, next) {
       }
     }
 
-    // Pagination logic
     const skip = (pageNumber - 1) * limitNumber;
 
-    // Fetch products from the database
     const products = await Product.find(query)
       .skip(skip)
       .limit(limitNumber)
       .exec();
 
-    // Count total number of products matching the query for pagination metadata
     const totalProducts = await Product.countDocuments(query);
 
-    // Send response
     res.status(200).json({
       status: 'success',
       results: products.length,
@@ -58,27 +50,21 @@ export async function fetchProduct(req, res, next) {
       data: products,
     });
   } catch (err) {
-    console.error(err); // Use console.error for logging errors
-    next(new AppError('Error fetching products', 500)); // Adjust error message
+    console.error(err);
+    next(new AppError('Error fetching products', 500));
   }
 }
 
 export async function findOneProduct(req, res, next) {
   try {
-    // Extract product ID from request params
     const { id } = req.params;
-
-    // Extract optional filters from query parameters
     const { category, name, priceMin, priceMax } = req.query;
-
-    // Find product by ID
     const product = await Product.findById(id);
 
     if (!product) {
       return next(new AppError('No product found with that ID', 404));
     }
 
-    // Apply additional filters if provided
     let isMatch = true;
 
     if (category && product.category !== category) {
@@ -102,13 +88,12 @@ export async function findOneProduct(req, res, next) {
       );
     }
 
-    // Send response with product details
     res.status(200).json({
       status: 'success',
       data: product,
     });
   } catch (err) {
-    console.error(err); // Use console.error for logging errors
-    next(new AppError('Error fetching product', 500)); // Adjust error message
+    console.error(err);
+    next(new AppError('Error fetching product', 500));
   }
 }

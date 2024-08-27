@@ -5,25 +5,6 @@ import Transaction from '../model/tx.js';
 import verifyTransaction from '../utils/verify.js';
 import generateUrl from '../utils/generateQr.js';
 
-// export async function verifyTxController(req, res, next) {
-//   try {
-//     const { reference } = req.query;
-//     if (!reference) {
-//       return next(new AppError('No or invalid Tx Reference', 400));
-//     }
-
-//     const referencePublicKey = new PublicKey(reference);
-//     await verifyTransaction(referencePublicKey);
-
-//     res.json({
-//       status: 'success',
-//       message: 'Your transaction is now verified',
-//     });
-//   } catch (err) {
-//     next(new AppError(err, 500));
-//   }
-// }
-
 export async function verifyTxController(req, res, next) {
   try {
     const { reference } = req.query;
